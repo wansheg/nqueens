@@ -1,4 +1,4 @@
-package src.main.java.cwinterview;
+package cwinterview;
 import java.util.ArrayList;
 class Ray { 
 	int x1, y1, x2, y2;

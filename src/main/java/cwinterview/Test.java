@@ -1,5 +1,4 @@
-package src.main.java.test;
-import src.main.java.cwinterview.*;
+package cwinterview;
 import java.util.ArrayList;
 
 public class Test {
