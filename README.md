@@ -1,12 +1,12 @@
-# solution for enhanced N-Queens problem
+# solution for derivated N-Queens problem
 
 ## how to run ?
     gradlew run build
-    gradle run 
+    gradlew run 
 
 
 ## API manual
-*the  package cwinterview supply following class 
+* the  package cwinterview supply following class 
 
     class cwinterview.NQueens
         
