@@ -1,5 +1,6 @@
 package cwinterview;
 import java.util.ArrayList;
+import java.util.logging.logger;
 class Ray { 
 	int x1, y1, x2, y2;
     Ray( int x1, int y1, int x2, int y2 ) { 
