@@ -3,7 +3,8 @@
 ## how to run ?
     gradle run
 
-  ** default problem size  is 10, you can pass problemSize args to the Test**
+**default problem size  is 10, you can pass problemSize args to the Test**  
+
     gradle run -PproblemSize=8
 
 
