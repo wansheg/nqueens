@@ -1,2 +1,11 @@
 apply plugin: 'java'
 
+task run(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+
+  main = 'cwinterview.Test'
+
+  // arguments to pass to the application
+  args( '10' )
+}
+
