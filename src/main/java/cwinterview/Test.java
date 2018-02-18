@@ -16,6 +16,10 @@ public class Test {
         System.out.println( "\n-------------------- killer ray Methods --------" );
         queens.killRayLay( );
         */
+
+        queens = new NQueens( sizeOfProblem );
+        System.out.println( "\n-------------------- reduced search Methods --------" );
+        queens.reducedSearchLay( );
         //queens.dumpResult();
     }
 }

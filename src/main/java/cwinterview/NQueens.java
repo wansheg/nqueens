@@ -100,6 +100,7 @@ public class NQueens{
                     this.result.add( this.currentSolution.clone() );
 
                     dumpSolution( this.currentSolution );
+                    solutionMap[yidx] = -1;
 
                     return ;
                 }
@@ -180,6 +181,7 @@ public class NQueens{
                 else {
                     this.result.add( this.currentSolution.clone() );
                     dumpSolution( this.currentSolution );
+                    this.solutionMap[yidx] = -1;
                     return ;
                 }
                 //recover deathMap
@@ -204,6 +206,85 @@ public class NQueens{
         */
     }
 
+    /************************** reduced search * *********************/
+
+    boolean isInvalid( int x, int y){
+
+        //avoid heave access of deathMap
+        //veritical kill
+        if( solutionMap[y] != -1 ) { 
+            //System.out.println( "    killed vertical : solutionMap[" + y + "] is " + solutionMap[y]   );
+            return true;
+        }
+        //45 degree kill 
+        for( int i = 0; i < x; i ++ ) { 
+            if( (currentSolution[i] - y == (x - i) )
+                    ||
+                (currentSolution[i] - y == ( i - x ) )
+                ){
+                //System.out.println( "    killed 45 degree " );
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    boolean checkResult( int[] solution ){
+        //search space: n * n * n
+        for( int i = 0; i < this.size; i++ ) { 
+            for( int j = i + 1; j < this.size; j++ ) { 
+                for( int k = j + 1; k < this.size; k++ ) { 
+                    int x1 = i;
+                    int x2 = j;
+                    int x3 = k;
+                    int y1 = solution[x1];
+                    int y2 = solution[x2];
+                    int y3 = solution[x3];
+
+                    if( ( x2-x1) * ( y3 -y1 ) == ( x3 - x1 ) * ( y2-y1 ) ) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    void reduced( int xidx ){ 
+        int yidx = 0;
+        int[] deathSet = new int[ ( this.size - xidx) * size ];
+        while ( yidx < this.size){
+
+            //System.out.println( "check < " + xidx + ", " + yidx + " > " );
+            if ( ! isInvalid( xidx, yidx ) ) {
+
+                this.currentSolution[xidx] = yidx;
+                this.solutionMap[yidx] = xidx;
+                //System.out.println( "ok: "+ xidx +", " + yidx );
+                if ( xidx < this.size - 1) 
+                    reduced( xidx + 1);
+                else {
+                    if( checkResult( this.currentSolution ) ) {
+                        this.result.add( this.currentSolution.clone() );
+                        dumpSolution( this.currentSolution );
+                    }
+                    this.solutionMap[yidx] = -1;
+                    return ;
+                }
+                this.solutionMap[yidx] = -1;
+            }
+
+            yidx++;
+        }
+        /*
+        System.out.print( "<" );
+        for( int i = 0; i < xidx; i++ ) { 
+            System.out.print( this.currentSolution[i] + "," );
+        }
+        System.out.println( ">" );
+        */
+    }
 
 	public NQueens( int size ) { 
     	this.size = size;
@@ -231,7 +312,16 @@ public class NQueens{
         return this.result;
     }
 
+    public ArrayList< int[] > reducedSearchLay(){ 
+        //firstly produce solution for traditional n queens problem;
+        //after get one solution, check whether it is valid for angle attack
+        reduced( 0 );
+        return this.result;
+    }
+
     void dumpSolution( int[] solution ){ 
+
+        System.out.println( "----------------------------" );
         for( int x = 0; x < size; x++ ) { 
             System.out.printf("%2d" ,  x );
             for( int y = 0; y < size; y++ ) { 
