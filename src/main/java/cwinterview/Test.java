@@ -20,6 +20,6 @@ public class Test {
         queens = new NQueens( sizeOfProblem );
         System.out.println( "\n-------------------- reduced search Methods --------" );
         queens.reducedSearchLay( );
-        //queens.dumpResult();
+        queens.dumpResult();
     }
 }
