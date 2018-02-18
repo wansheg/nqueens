@@ -3,12 +3,12 @@
 ## how to run ?
     gradle run
 
-    *** default problem size  is 10, ***
+    ***default problem size  is 10,***
 
 ## how to build ?
     gradle build
     
-    * youwill get nqueens.jar in build/libs/
+    ***youwill get nqueens.jar in build/libs/***
 
 
 

@@ -6,6 +6,11 @@ task run(type: JavaExec) {
   main = 'cwinterview.Test'
 
   // arguments to pass to the application
-  args( '10' )
+  if(project.hasProperty('problemSize')){
+       args( problemSize )
+  }
+  else {
+    args( '10' )
+  }
 }
 
