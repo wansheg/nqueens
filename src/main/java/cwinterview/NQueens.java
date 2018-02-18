@@ -1,6 +1,8 @@
 package cwinterview;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+
+
+//it standfor a "line" between (x1, y1 ) and (x2, y2 )
 class Ray { 
 	int x1, y1, x2, y2;
     Ray( int x1, int y1, int x2, int y2 ) { 
@@ -27,22 +29,36 @@ class Ray {
     }
 }
 
-/* ^
+/**
+ * ^
  * | y
  * | ^
  * | |  
  * | |
  * |
- * |   ----> x
- * --------------------->
+ * |   ----&> x
+ * ---------------------&>
+ * NQueens class supply three methods to resolve enhanced-NQueens problem. 
+ *  * killRayLay
+ *  * deathMapLay
+ *  * reducedSearchLay
+ *
+ * three methods  are all n**3 complexity 
+ *
+ * but the "reducedSearchLay" is best method, beacause "reducedSearchLay" reduced  
+ * times of memory acces 
+ *
  */
 
 public class NQueens{
     int size;
+    /* main solutionMap , record position by mapping "y" to "x" */
     int []solutionMap;
+    /* record current solution, record position by mapping "x" to "y" */
+    int []currentSolution;
+
     ArrayList<int[]>    result;
 
-    int []currentSolution;
 
     /**********************  killer ray method **************************/
     ArrayList<Ray> rayset;
@@ -74,6 +90,7 @@ public class NQueens{
         return false;
     }
 
+    //add all "line" bewteen current point( x, y) and previous valid points 
     int updateRayset( int x, int y ) { 
         //System.out.println( "update Rayset: solutionMap[" + y + "]: " + x );
         int marker = rayset.size();
@@ -85,8 +102,7 @@ public class NQueens{
         } 
         return marker;
     }
-
-    void layout(int xidx) {
+    void killRay(int xidx) {
         int yidx = 0;
         while ( yidx < this.size){
             //System.out.println( "check < " + xidx + ", " + yidx + " > " );
@@ -95,11 +111,11 @@ public class NQueens{
                 this.currentSolution[xidx] = yidx;
                 this.solutionMap[yidx] = xidx;
                 if ( xidx < this.size - 1) 
-                    layout( xidx + 1);
+                    killRay( xidx + 1);
                 else {
                     this.result.add( this.currentSolution.clone() );
 
-                    dumpSolution( this.currentSolution );
+                    //dumpSolution( this.currentSolution );
                     solutionMap[yidx] = -1;
 
                     return ;
@@ -180,7 +196,7 @@ public class NQueens{
                     search( xidx + 1);
                 else {
                     this.result.add( this.currentSolution.clone() );
-                    dumpSolution( this.currentSolution );
+                    //dumpSolution( this.currentSolution );
                     this.solutionMap[yidx] = -1;
                     return ;
                 }
@@ -251,7 +267,14 @@ public class NQueens{
         return true;
     }
 
-    void reduced( int xidx ){ 
+
+    /**
+     * firstly, produce solution for "traditional" N-Queens problem
+     * then valid the solution to find that there is not 
+     * "angle attack" amonge arbitrary three Queens in the solution.
+     */
+
+    void reducedSearch( int xidx ){ 
         int yidx = 0;
         int[] deathSet = new int[ ( this.size - xidx) * size ];
         while ( yidx < this.size){
@@ -263,11 +286,11 @@ public class NQueens{
                 this.solutionMap[yidx] = xidx;
                 //System.out.println( "ok: "+ xidx +", " + yidx );
                 if ( xidx < this.size - 1) 
-                    reduced( xidx + 1);
+                    reducedSearch( xidx + 1);
                 else {
                     if( checkResult( this.currentSolution ) ) {
                         this.result.add( this.currentSolution.clone() );
-                        dumpSolution( this.currentSolution );
+                        //dumpSolution( this.currentSolution );
                     }
                     this.solutionMap[yidx] = -1;
                     return ;
@@ -286,6 +309,9 @@ public class NQueens{
         */
     }
 
+    /*
+     * construct NQueens with problem size 
+     */
 	public NQueens( int size ) { 
     	this.size = size;
     	this.currentSolution = new int[ size ];
@@ -297,13 +323,21 @@ public class NQueens{
     }
 
 
+    /**
+     * "rayset" is used to maintain a "line" which two "point" defined, 
+     *  any point( x, y) location on the "line" is killed ( isKilled return true )
+     *  the rayset is shift when recursive "killRay"  return
+     */
+
 	public ArrayList<int[]> killRayLay( ) {
+        //init rayset, 
     	this.rayset = new ArrayList<Ray>( size * size / 2 + 1 );
-        layout( 0 );
+        killRay( 0 );
         return this.result;
 	}
 
     public ArrayList<int[]> deathMapLay(){ 
+        //init deathMap
         deathMap = new int[ size * size ];
         for( int i = 0; i < size * size; i++ ) { 
             deathMap[i] = 0;
@@ -315,7 +349,7 @@ public class NQueens{
     public ArrayList< int[] > reducedSearchLay(){ 
         //firstly produce solution for traditional n queens problem;
         //after get one solution, check whether it is valid for angle attack
-        reduced( 0 );
+        reducedSearch( 0 );
         return this.result;
     }
 

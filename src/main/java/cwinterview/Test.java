@@ -7,8 +7,8 @@ public class Test {
         System.out.println( "resolving  " +   ( sizeOfProblem ) + " queens problem " );
 
         NQueens queens = new NQueens( sizeOfProblem );
-        System.out.println( "\n-------------------- deathMap method --------" );
-        queens.deathMapLay( );
+        //System.out.println( "\n-------------------- deathMap method --------" );
+        //queens.deathMapLay( );
         //queens.dumpResult();
 
         /*
