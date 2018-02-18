@@ -45,8 +45,27 @@ public class NQueens{
     int []currentSolution;
 
     boolean isKilled( int x, int y ) { 
+        //veritical kill
+        if( solutionMap[y] != -1 ) { 
+            //System.out.println( "    killed vertical : solutionMap[" + y + "] is " + solutionMap[y]   );
+            return true;
+        }
+        //45 degree kill 
+        for( int i = 0; i < x; i ++ ) { 
+            if( (currentSolution[i] - y == (x - i) )
+                    ||
+                (currentSolution[i] - y == ( i - x ) )
+                ){
+                //System.out.println( "    killed 45 degree " );
+                return true;
+            }
+
+        }
+
+        //three point line kill
         for( int i = 0; i < rayset.size(); i++ ) { 
             if( rayset.get( i ).killed( x, y ) ) {
+                //System.out.println( "    killed 3 point line " );
                 return true ;
             }
         }
@@ -54,6 +73,7 @@ public class NQueens{
     }
 
     int updateRayset( int x, int y ) { 
+        //System.out.println( "update Rayset: solutionMap[" + y + "]: " + x );
         this.solutionMap[y] = x;
         int marker = rayset.size();
         for( int i = 0; i < x; i++ ) { 
@@ -69,15 +89,29 @@ public class NQueens{
         int yidx = 0;
         while ( yidx < this.size){
             int recoverMarker = rayset.size();
+            //System.out.println( "check < " + xidx + ", " + yidx + " > " );
             if ( ! isKilled( xidx, yidx ) ) {
                 recoverMarker = updateRayset( xidx, yidx );
                 this.currentSolution[xidx] = yidx;
-                if ( xidx < this.size) 
+                if ( xidx < this.size - 1) 
                     layout( xidx + 1);
                 else {
                     this.result.add( this.currentSolution.clone() );
+                    for( int x = 0; x < size; x++ ) { 
+                        for( int y = 0; y < size; y++ ) { 
+                            if( currentSolution[x] == y  ) { 
+                                System.out.print( "O" );
+                            }
+                            else {
+                                System.out.print( "X" );
+                            }
+                        }
+                        System.out.println( "" );
+                    }
+
                     return ;
                 }
+                solutionMap[yidx] = -1;
             }
             rayset.subList( recoverMarker, rayset.size() ).clear();
             yidx++;
@@ -101,7 +135,21 @@ public class NQueens{
 	}
 
 	public void dumpResult() { 
-		System.out.println( "result of queens layout:");
+		System.out.println( "result of queens layout: " + result.size()  );
+        for( int i = 0; i < result.size(); i++ ) { 
+            System.out.println( "-------------------------------" );
+            for( int x = 0; x < size; x++ ) { 
+                for( int y = 0; y < size; y++ ) { 
+                    if( result.get( i )[x] == y  ) { 
+                        System.out.print( "O" );
+                    }
+                    else {
+                        System.out.print( "*" );
+                    }
+                }
+                System.out.println( "" );
+            }
+        }
 	}
 }
 
