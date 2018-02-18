@@ -33,21 +33,20 @@
             check current position is valid or not by check it is  
             on the line of two determined "queens" 
 
-        deathMapLay( )
+        deathMapLay( )  
             deprecated, obsoluted, because it is a little slow :(  
             mark the unvisited "position" as death if  
             the "position" is on the line of two queens   
     
-        reducedSearchLay( )
+        reducedSearchLay( )  
         **recommend API , it is best performance** 
             firstly, get solution of "traditional" N-Queens problem, 
             then check the solution contain no "angle attack"  
             amonge arbitrary three queens, it is also "n**3" complexity,  
             but it reduced the search space and memory access. so it is  
-
-
-    class cwinterview.Test
-        main class to run the test with "intege" args 
+        
+        class cwinterview.Test  
+            main class to run the test with "intege" args 
 
 
         
