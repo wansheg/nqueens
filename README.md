@@ -3,12 +3,14 @@
 ## how to run ?
     gradle run
 
-     **default problem size  is 10,**
+  ** default problem size  is 10, you can pass problemSize args to the Test**
+    gradle run -PproblemSize=8
+
 
 ## how to build ?
     gradle build
     
-    **youwill get nqueens.jar in build/libs/**
+  **you will get nqueens.jar in build/libs/**
 
 
 
