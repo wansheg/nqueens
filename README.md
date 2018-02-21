@@ -16,14 +16,12 @@
 
 
 ## API manual
-* the  package cwinterview supply following class 
+### the  package cwinterview supply following class 
 
-    class cwinterview.NQueens  
+####    class cwinterview.NQueens  
         which supply three methods to obtain solutions for the problem.  
-        recommend to use  "reducedSearch" which has best performance  
+        recommend to use  "killRayLay" which has best performance  
 
-        two other methods are dprecated, which are slow. I developed them  
-        in rush
         
         new NQueens( int size )
             size of chess board
@@ -44,7 +42,7 @@
             then check the solution contain no "angle attack"  
             amonge arbitrary three queens, it is also "n**3" complexity,  
         
-    class cwinterview.Test  
+####    class cwinterview.Test  
         main class to run the test with "intege" args 
 
 
