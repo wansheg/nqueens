@@ -44,8 +44,8 @@
             then check the solution contain no "angle attack"  
             amonge arbitrary three queens, it is also "n**3" complexity,  
         
-        class cwinterview.Test  
-            main class to run the test with "intege" args 
+    class cwinterview.Test  
+        main class to run the test with "intege" args 
 
 
         
