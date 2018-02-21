@@ -29,7 +29,7 @@
             size of chess board
         
         killRayLay( )
-            deprecated, obsoluted, because it is too slow :(  
+            **recommend API , it is best performance** 
             check current position is valid or not by check it is  
             on the line of two determined "queens" 
 
@@ -39,11 +39,10 @@
             the "position" is on the line of two queens   
     
         reducedSearchLay( )  
-        **recommend API , it is best performance** 
+            deprecated, obsoluted, because it is a little slow :(  
             firstly, get solution of "traditional" N-Queens problem, 
             then check the solution contain no "angle attack"  
             amonge arbitrary three queens, it is also "n**3" complexity,  
-            but it reduced the search space and memory access. so it is  
         
         class cwinterview.Test  
             main class to run the test with "intege" args 

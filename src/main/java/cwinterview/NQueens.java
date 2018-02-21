@@ -2,32 +2,6 @@ package cwinterview;
 import java.util.ArrayList;
 
 
-//it standfor a "line" between (x1, y1 ) and (x2, y2 )
-class Ray { 
-	int x1, y1, x2, y2;
-    Ray( int x1, int y1, int x2, int y2 ) { 
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-    }
-
-    //completely integer multi , good version , avoid float arith
-    boolean  killed( int x, int y ) { 
-        //for x-ray,  all "y" value is equal
-        if( y == y1 || y == y2 ) { 
-            return true;
-        }
-        int img1 = ( x - x1 ) * ( y - y2 );
-        int img2 = ( y - y1 ) * ( x - x2 );
-        if( img1 == img2 ) { 
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-}
 
 /**
  * ^
@@ -63,7 +37,6 @@ public class NQueens{
 
 
     /**********************  killer ray method **************************/
-    ArrayList<Ray> rayset;
     boolean isKilled( int x, int y ) { 
         //veritical kill
         if( solutionMap[y] != -1 ) { 
@@ -362,6 +335,7 @@ public class NQueens{
         this.solutionCrossMap1 = new int[size *2 ];
         //-45 degree, check conflict
         this.solutionCrossMap2 = new int[ size *2 ];
+
         for( int i = 0; i < size *2; i++ ) { 
             this.solutionCrossMap1[i] = 0;
             this.solutionCrossMap2[i] = 0;
@@ -370,14 +344,10 @@ public class NQueens{
 
 
     /**
-     * "rayset" is used to maintain a "line" which two "point" defined, 
      *  any point( x, y) location on the "line" is killed ( isKilled return true )
-     *  the rayset is shift when recursive "killRay"  return
      */
 
 	public ArrayList<int[]> killRayLay( ) {
-        //init rayset, 
-    	this.rayset = new ArrayList<Ray>( size * size / 2 + 1 );
         killRay( 0 );
         return this.result;
 	}
