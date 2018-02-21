@@ -54,6 +54,8 @@ public class NQueens{
     int size;
     /* main solutionMap , record position by mapping "y" to "x" */
     int []solutionMap;
+    int [] solutionCrossMap1;
+    int [] solutionCrossMap2;
     /* record current solution, record position by mapping "x" to "y" */
     int []currentSolution;
 
@@ -68,6 +70,12 @@ public class NQueens{
             //System.out.println( "    killed vertical : solutionMap[" + y + "] is " + solutionMap[y]   );
             return true;
         }
+
+        if( solutionCrossMap1[ x + y ]  > 0 || solutionCrossMap2[x - y + size] > 0) { 
+            return true;
+        }
+
+        /*
         //45 degree kill 
         for( int i = 0; i < x; i ++ ) { 
             if( (currentSolution[i] - y == (x - i) )
@@ -79,37 +87,33 @@ public class NQueens{
             }
 
         }
+        */
 
-        //three point line kill
-        for( int i = 0; i < rayset.size(); i++ ) { 
-            if( rayset.get( i ).killed( x, y ) ) {
-                //System.out.println( "    killed 3 point line " );
-                return true ;
+        for( int i =0; i < x; i++ ) { 
+            int x1 = i;
+            int y1 = currentSolution[i];
+            for( int j = i + 1; j < x; j++ ) { 
+                int x2 = j;
+                int y2 = currentSolution[j];
+                if( (x -x1 )*( y2 - y1 ) == ( x2-x1 ) * ( y - y1 ) ) { 
+                    return true;
+                }
             }
+
         }
         return false;
     }
 
-    //add all "line" bewteen current point( x, y) and previous valid points 
-    int updateRayset( int x, int y ) { 
-        //System.out.println( "update Rayset: solutionMap[" + y + "]: " + x );
-        int marker = rayset.size();
-        for( int i = 0; i < x; i++ ) { 
-            //add new rayset
-            int x1 = i;
-            int y1 = currentSolution[x1];
-            rayset.add( new Ray( x1, y1, x, y ) );
-        } 
-        return marker;
-    }
+
     void killRay(int xidx) {
         int yidx = 0;
         while ( yidx < this.size){
             //System.out.println( "check < " + xidx + ", " + yidx + " > " );
             if ( ! isKilled( xidx, yidx ) ) {
-                int recoverMarker = updateRayset( xidx, yidx );
                 this.currentSolution[xidx] = yidx;
                 this.solutionMap[yidx] = xidx;
+                this.solutionCrossMap1[xidx + yidx ] = 1;
+                this.solutionCrossMap2[xidx - yidx + size] = 1;
                 if ( xidx < this.size - 1) 
                     killRay( xidx + 1);
                 else {
@@ -117,11 +121,14 @@ public class NQueens{
 
                     //dumpSolution( this.currentSolution );
                     solutionMap[yidx] = -1;
+                    this.solutionCrossMap1[xidx + yidx ] = 0;
+                    this.solutionCrossMap2[xidx - yidx + size] = 0;
 
                     return ;
                 }
                 solutionMap[yidx] = -1;
-                rayset.subList( recoverMarker, rayset.size() ).clear();
+                this.solutionCrossMap1[xidx + yidx ] = 0;
+                this.solutionCrossMap2[xidx - yidx + size] = 0;
             }
             yidx++;
         }
@@ -138,6 +145,12 @@ public class NQueens{
             //System.out.println( "    killed vertical : solutionMap[" + y + "] is " + solutionMap[y]   );
             return true;
         }
+
+        if( solutionCrossMap1[ x + y ]  > 0 || solutionCrossMap2[x - y + size] > 0) { 
+            return true;
+        }
+
+        /*
         //45 degree kill 
         for( int i = 0; i < x; i ++ ) { 
             if( (currentSolution[i] - y == (x - i) )
@@ -149,6 +162,7 @@ public class NQueens{
             }
 
         }
+        */
 
         if( this.deathMap[x* size +  y ] > 0 ) { 
             //killed by deathMap: 
@@ -191,6 +205,9 @@ public class NQueens{
 
                 this.currentSolution[xidx] = yidx;
                 this.solutionMap[yidx] = xidx;
+
+                this.solutionCrossMap1[xidx + yidx ] = 1;
+                this.solutionCrossMap2[xidx - yidx + size] = 1;
                 //System.out.println( "ok: "+ xidx +", " + yidx );
                 if ( xidx < this.size - 1) 
                     search( xidx + 1);
@@ -198,6 +215,9 @@ public class NQueens{
                     this.result.add( this.currentSolution.clone() );
                     //dumpSolution( this.currentSolution );
                     this.solutionMap[yidx] = -1;
+                    this.solutionCrossMap1[xidx + yidx ] = 0;
+                    this.solutionCrossMap2[xidx - yidx + size] = 0;
+
                     return ;
                 }
                 //recover deathMap
@@ -209,6 +229,8 @@ public class NQueens{
                     }
                 }
                 this.solutionMap[yidx] = -1;
+                this.solutionCrossMap1[xidx + yidx ] = 0;
+                this.solutionCrossMap2[xidx - yidx + size] = 0;
             }
 
             yidx++;
@@ -232,6 +254,13 @@ public class NQueens{
             //System.out.println( "    killed vertical : solutionMap[" + y + "] is " + solutionMap[y]   );
             return true;
         }
+
+        if( solutionCrossMap1[ x + y ]  > 0 || solutionCrossMap2[x - y + size] > 0) { 
+            //System.out.println( "    killed 45 degree " );
+            return true;
+        }
+
+        /*
         //45 degree kill 
         for( int i = 0; i < x; i ++ ) { 
             if( (currentSolution[i] - y == (x - i) )
@@ -243,6 +272,7 @@ public class NQueens{
             }
 
         }
+        */
         return false;
     }
 
@@ -283,7 +313,10 @@ public class NQueens{
             if ( ! isInvalid( xidx, yidx ) ) {
 
                 this.currentSolution[xidx] = yidx;
-                this.solutionMap[yidx] = xidx;
+                this.solutionMap[ yidx] = xidx;
+                this.solutionCrossMap1[ xidx + yidx ] = 1;
+                this.solutionCrossMap2[ xidx - yidx + size] = 1;
+
                 //System.out.println( "ok: "+ xidx +", " + yidx );
                 if ( xidx < this.size - 1) 
                     reducedSearch( xidx + 1);
@@ -293,9 +326,13 @@ public class NQueens{
                         //dumpSolution( this.currentSolution );
                     }
                     this.solutionMap[yidx] = -1;
+                    this.solutionCrossMap1[xidx + yidx ] = 0;
+                    this.solutionCrossMap2[xidx - yidx + size] = 0;
                     return ;
                 }
                 this.solutionMap[yidx] = -1;
+                this.solutionCrossMap1[xidx + yidx ] = 0;
+                this.solutionCrossMap2[xidx - yidx + size] = 0;
             }
 
             yidx++;
@@ -319,6 +356,15 @@ public class NQueens{
     	this.result = new ArrayList<int[]>( size/2 );
         for( int i = 0; i < size; i++ ) { 
             this.solutionMap[i] = -1;
+        }
+
+        //45 degree , check conflict
+        this.solutionCrossMap1 = new int[size *2 ];
+        //-45 degree, check conflict
+        this.solutionCrossMap2 = new int[ size *2 ];
+        for( int i = 0; i < size *2; i++ ) { 
+            this.solutionCrossMap1[i] = 0;
+            this.solutionCrossMap2[i] = 0;
         }
     }
 
